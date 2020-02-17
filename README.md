@@ -1,1 +1,5 @@
+# Design Patterns
+
+### In this repository I´m trying to show some of the most useful designs used commonly.
+
 [Strategy](https://github.com/ThiagoEvoa/design_patterns/tree/strategy)
