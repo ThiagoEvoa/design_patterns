@@ -2,13 +2,16 @@
 
 ## Define a family of algorithms, encapsulate each one, and make them interchangeable.
 
+### Entrypoint
 ```java
 void main() {
   FinanceCalculation calculation = new FinanceCalculation();
-  
   calculation.calculateBonusByMerit();
 }
+```
 
+### FinanceCalculation
+```java
 class FinanceCalculation extends EmployeeBenefits{
   
   calculateBonusByGrade(){
@@ -21,7 +24,10 @@ class FinanceCalculation extends EmployeeBenefits{
     this.calculateBonus();
   }
 }
+```
 
+### EmployeeBenefits
+```java
 abstract class EmployeeBenefits{
   IBonusCalculator iBonusCalculator;
   
@@ -33,20 +39,30 @@ abstract class EmployeeBenefits{
     iBonusCalculator.calculateBonus();
   }
 }
+```
 
+### IBonusCalculator
+```java
 interface class IBonusCalculator{
   calculateBonus();
 }
+```
 
+### BonusCalculatorGrade
+```java
 class BonusCalculatorGrade implements IBonusCalculator{
   calculateBonus(){
     print('BonusCalculatorGrade');
   }
 }
+```
 
+### BonusCalculatorMerit
+```java
 class BonusCalculatorMerit implements IBonusCalculator{
   calculateBonus(){
     print('BonusCalculatorMerit');
   }
 }
+```
 
