@@ -4,7 +4,7 @@
 
 ```java
 void main() {
- FinanceCalculation calculation = new FinanceCalculation();
+  FinanceCalculation calculation = new FinanceCalculation();
   
   calculation.calculateBonusByMerit();
 }
