@@ -2,7 +2,8 @@
 
 ## Define a family of algorithms, encapsulate each one, and make them interchangeable.
 
-´´´dart
+```dart
+>>>>>>> 88cc9cf754ef106661e07aeef5f77792cb08e850
 void main() {
  FinanceCalculation calculation = new FinanceCalculation();
   
