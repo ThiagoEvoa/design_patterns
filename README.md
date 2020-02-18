@@ -1,43 +1,37 @@
-# Strategy
+# Decorator
 
-## Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm very independently from clients that use it.
+## Attach additional responsibilities to an  object dynamically.
 
 ### Entrypoint
 ```dart
 void main() {
-  FinanceCalculation calculation = new FinanceCalculation();
-  calculation.calculateBonusByMerit();
+  ITicket iTicket = BasicTicket();
+  bool palace = true;
+  bool train = false;
+  
+  if(palace){
+    iTicket = PalaceDecorator(iTicket);
+  }else if(train){
+    iTicket = TrainDecorator(iTicket);
+  }
+  
+  TicketProcessor().printTicketPrice(iTicket);
 }
 ```
 
-### FinanceCalculation
+### TicketProcessor
 ```dart
-class FinanceCalculation extends EmployeeBenefits{
-  
-  calculateBonusByGrade(){
-    this.setBonusCalculator(BonusCalculatorGrade());
-    this.calculateBonus();
-  }
-  
-  calculateBonusByMerit(){
-    this.setBonusCalculator(BonusCalculatorMerit());
-    this.calculateBonus();
+class TicketProcessor{
+  printTicketPrice(ITicket interface){
+    print(interface.getTicketCost().toString());
   }
 }
 ```
 
-### EmployeeBenefits
+### ITicket
 ```dart
-abstract class EmployeeBenefits{
-  IBonusCalculator iBonusCalculator;
-  
-  setBonusCalculator(IBonusCalculator interface){
-    iBonusCalculator = interface;
-  }
-  
-  calculateBonus(){
-    iBonusCalculator.calculateBonus();
-  }
+abstract class ITicket{
+  double getTicketCost();
 }
 ```
 
@@ -48,21 +42,56 @@ abstract class IBonusCalculator{
 }
 ```
 
-### BonusCalculatorGrade
+### BasicTicket
 ```dart
-class BonusCalculatorGrade implements IBonusCalculator{
-  calculateBonus(){
-    print('BonusCalculatorGrade');
+class BasicTicket implements ITicket{
+  double getTicketCost(){
+    return 5.0;
   }
 }
 ```
 
-### BonusCalculatorMerit
+### TicketDecorator
 ```dart
-class BonusCalculatorMerit implements IBonusCalculator{
-  calculateBonus(){
-    print('BonusCalculatorMerit');
+abstract class TicketDecorator implements ITicket{
+  ITicket iTicket;
+  
+  TicketDecorator(ITicket interface){
+    this.iTicket = interface;
+  }
+  
+  double getTicketCost(){
+    return BasicTicket().getTicketCost();
   }
 }
 ```
 
+### PalaceDecorator
+```dart
+class PalaceDecorator extends TicketDecorator{
+  ITicket iTicket;
+  
+  PalaceDecorator(ITicket interface) : super(interface){
+    iTicket = interface;
+  }
+  
+  double getTicketCost(){
+    return iTicket.getTicketCost() + 5;
+  }
+}
+```
+
+### TrainDecorator
+```dart
+class TrainDecorator extends TicketDecorator{
+  ITicket iTicket;
+  
+  TrainDecorator(ITicket interface) : super(interface){
+    iTicket = interface;
+  }
+  
+  double getTicketCost(){
+    return iTicket.getTicketCost() + 10;
+  }
+}
+```
