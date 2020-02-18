@@ -3,7 +3,7 @@
 ## Define a interface for creating an object, but let subclasses decide wich class to instantiate. Factory method lets a class defer instantiation to subclasses.
 
 ### Entrypoint
-```java
+```dart
 void main() {
   SQLDBHelper helper = SQLDBHelper();
   helper.connectDB();
@@ -11,7 +11,7 @@ void main() {
 ```
 
 ### SQLDBHelper
-```java
+```dart
 class SQLDBHelper extends DBHelper{
   connectDB(){
     this.connect(SQLConnect());
@@ -20,7 +20,7 @@ class SQLDBHelper extends DBHelper{
 ```
 
 ### MongoDBHelper
-```java
+```dart
 class MongoDBHelper extends DBHelper{
   connectDB(){
     this.connect(MongoConnect());
@@ -29,7 +29,7 @@ class MongoDBHelper extends DBHelper{
 ```
 
 ### DBHelper
-```java
+```dart
 abstract class DBHelper{
   connect(IConnect interface){
     interface.connect();
@@ -38,14 +38,14 @@ abstract class DBHelper{
 ```
 
 ### IConnect
-```java
-interface IConnect{
+```dart
+abstract class IConnect{
   connect();
 }
 ```
 
 ### SQLConnect
-```java
+```dart
 class SQLConnect implements IConnect{
   connect(){
     print('SQLConnect');
@@ -54,7 +54,7 @@ class SQLConnect implements IConnect{
 ```
 
 ### MongoConnect
-```java
+```dart
 class MongoConnect implements IConnect{
   connect(){
     print('MongoConnect');
