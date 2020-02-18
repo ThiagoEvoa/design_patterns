@@ -1,68 +1,63 @@
-# Strategy
+# Factory Method
 
-## Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm very independently from clients that use it.
+## Define a interface for creating an object, but let subclasses decide wich class to instantiate. Factory method lets a class defer instantiation to subclasses.
 
 ### Entrypoint
 ```java
 void main() {
-  FinanceCalculation calculation = new FinanceCalculation();
-  calculation.calculateBonusByMerit();
+  SQLDBHelper helper = SQLDBHelper();
+  helper.connectDB();
 }
 ```
 
-### FinanceCalculation
+### SQLDBHelper
 ```java
-class FinanceCalculation extends EmployeeBenefits{
-  
-  calculateBonusByGrade(){
-    this.setBonusCalculator(BonusCalculatorGrade());
-    this.calculateBonus();
-  }
-  
-  calculateBonusByMerit(){
-    this.setBonusCalculator(BonusCalculatorMerit());
-    this.calculateBonus();
+class SQLDBHelper extends DBHelper{
+  connectDB(){
+    this.connect(SQLConnect());
   }
 }
 ```
 
-### EmployeeBenefits
+### MongoDBHelper
 ```java
-abstract class EmployeeBenefits{
-  IBonusCalculator iBonusCalculator;
-  
-  setBonusCalculator(IBonusCalculator interface){
-    iBonusCalculator = interface;
-  }
-  
-  calculateBonus(){
-    iBonusCalculator.calculateBonus();
+class MongoDBHelper extends DBHelper{
+  connectDB(){
+    this.connect(MongoConnect());
   }
 }
 ```
 
-### IBonusCalculator
+### DBHelper
 ```java
-interface class IBonusCalculator{
-  calculateBonus();
-}
-```
-
-### BonusCalculatorGrade
-```java
-class BonusCalculatorGrade implements IBonusCalculator{
-  calculateBonus(){
-    print('BonusCalculatorGrade');
+abstract class DBHelper{
+  connect(IConnect interface){
+    interface.connect();
   }
 }
 ```
 
-### BonusCalculatorMerit
+### IConnect
 ```java
-class BonusCalculatorMerit implements IBonusCalculator{
-  calculateBonus(){
-    print('BonusCalculatorMerit');
+interface IConnect{
+  connect();
+}
+```
+
+### SQLConnect
+```java
+class SQLConnect implements IConnect{
+  connect(){
+    print('SQLConnect');
   }
 }
 ```
 
+### MongoConnect
+```java
+class MongoConnect implements IConnect{
+  connect(){
+    print('MongoConnect');
+  }
+}
+```
