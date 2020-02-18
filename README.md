@@ -10,4 +10,5 @@
 
 ### Behavioral
 [Strategy](https://github.com/ThiagoEvoa/design_patterns/tree/strategy)
+
 [State](https://github.com/ThiagoEvoa/design_patterns/tree/state)
