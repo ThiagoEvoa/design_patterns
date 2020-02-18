@@ -5,3 +5,4 @@
 1) [Strategy](https://github.com/ThiagoEvoa/design_patterns/tree/strategy)
 2) [Factory Method](https://github.com/ThiagoEvoa/design_patterns/tree/factory_method)
 3) [Decorator](https://github.com/ThiagoEvoa/design_patterns/tree/decorator)
+4) [State](https://github.com/ThiagoEvoa/design_patterns/tree/state)
