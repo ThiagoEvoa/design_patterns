@@ -3,7 +3,7 @@
 ## Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm very independently from clients that use it.
 
 ### Entrypoint
-```java
+```dart
 void main() {
   FinanceCalculation calculation = new FinanceCalculation();
   calculation.calculateBonusByMerit();
@@ -11,7 +11,7 @@ void main() {
 ```
 
 ### FinanceCalculation
-```java
+```dart
 class FinanceCalculation extends EmployeeBenefits{
   
   calculateBonusByGrade(){
@@ -27,7 +27,7 @@ class FinanceCalculation extends EmployeeBenefits{
 ```
 
 ### EmployeeBenefits
-```java
+```dart
 abstract class EmployeeBenefits{
   IBonusCalculator iBonusCalculator;
   
@@ -42,14 +42,14 @@ abstract class EmployeeBenefits{
 ```
 
 ### IBonusCalculator
-```java
-interface class IBonusCalculator{
+```dart
+abstract class IBonusCalculator{
   calculateBonus();
 }
 ```
 
 ### BonusCalculatorGrade
-```java
+```dart
 class BonusCalculatorGrade implements IBonusCalculator{
   calculateBonus(){
     print('BonusCalculatorGrade');
@@ -58,7 +58,7 @@ class BonusCalculatorGrade implements IBonusCalculator{
 ```
 
 ### BonusCalculatorMerit
-```java
+```dart
 class BonusCalculatorMerit implements IBonusCalculator{
   calculateBonus(){
     print('BonusCalculatorMerit');
