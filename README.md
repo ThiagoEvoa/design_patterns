@@ -1,67 +1,78 @@
-# Strategy
+# State
 
-## Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm very independently from clients that use it.
+## Allow an object to alter its behavior when its internal state changes. The object will appear to change its class. 
 
 ### Entrypoint
 ```dart
 void main() {
-  FinanceCalculation calculation = new FinanceCalculation();
-  calculation.calculateBonusByMerit();
+  Account account = Account(state: ActiveState());
+  account.issueBook();
+  
+  account.onTimeElapsed();
+  print(account.getState());
+  account.issueBook();
 }
 ```
 
-### FinanceCalculation
+### Account
 ```dart
-class FinanceCalculation extends EmployeeBenefits{
+class Account{
+  static AccountState currentState;
   
-  calculateBonusByGrade(){
-    this.setBonusCalculator(BonusCalculatorGrade());
-    this.calculateBonus();
-  }
-  
-  calculateBonusByMerit(){
-    this.setBonusCalculator(BonusCalculatorMerit());
-    this.calculateBonus();
-  }
-}
-```
-
-### EmployeeBenefits
-```dart
-abstract class EmployeeBenefits{
-  IBonusCalculator iBonusCalculator;
-  
-  setBonusCalculator(IBonusCalculator interface){
-    iBonusCalculator = interface;
+  Account({AccountState state}){
+    currentState = state;
   }
   
-  calculateBonus(){
-    iBonusCalculator.calculateBonus();
+  setState(AccountState state){
+    currentState = state;
+  }
+  
+  getState(){
+    return currentState;
+  }
+  
+  issueBook(){
+    currentState.issueBook();
+  }
+  
+  onTimeElapsed(){
+   currentState.onTimeElapsed(); 
   }
 }
 ```
 
-### IBonusCalculator
+### AccountState
 ```dart
-abstract class IBonusCalculator{
-  calculateBonus();
+abstract class AccountState{
+  issueBook(){}
+  onTimeElapsed(){}
 }
 ```
 
-### BonusCalculatorGrade
+### ActiveState
 ```dart
-class BonusCalculatorGrade implements IBonusCalculator{
-  calculateBonus(){
-    print('BonusCalculatorGrade');
+class ActiveState implements AccountState{
+  issueBook(){
+    print('ActiveState: issueBook');
+  }
+  
+  onTimeElapsed(){
+    print('ActiveState: onTimeElapsed');
+    Account().setState(CancelledState());
   }
 }
 ```
 
-### BonusCalculatorMerit
+### CancelledState
 ```dart
-class BonusCalculatorMerit implements IBonusCalculator{
-  calculateBonus(){
-    print('BonusCalculatorMerit');
+class CancelledState implements AccountState{
+  issueBook(){
+    print('CancelledState: issueBook');
+  }
+  
+  onTimeElapsed(){
+    print('CancelledState: onTimeElapsed');
+    Account().setState(ActiveState());
   }
 }
 ```
