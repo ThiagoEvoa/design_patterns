@@ -19,6 +19,6 @@
 
 [State](https://github.com/ThiagoEvoa/design_patterns/tree/state)
 
-[Observer]
+[Observer](https://github.com/ThiagoEvoa/design_patterns/tree/observer)
 
 [Command]
