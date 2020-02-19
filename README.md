@@ -1,42 +1,34 @@
-# State
+# Observer
 
-## Allow an object to alter its behavior when its internal state changes. The object will appear to change its class. 
+## Define a one-to-many dependency between objects so that when one object changes state, all its dependences are update autimatically. 
 
 ### Entrypoint
 ```dart
 void main() {
-  Account account = Account(state: ActiveState());
-  account.issueBook();
+  Account account = Account();
+  EmailNotifier emailNotifier = EmailNotifier(account);
+  AccountsExpiredView accountsExpiredView = AccountsExpiredView(account);
   
-  account.onTimeElapsed();
-  print(account.getState());
-  account.issueBook();
+  account.addListener(emailNotifier);
+  account.addListener(accountsExpiredView);
+  
+  account.notifyListeners();
 }
 ```
 
 ### Account
 ```dart
-class Account{
-  static AccountState currentState;
-  
-  Account({AccountState state}){
-    currentState = state;
+class Account extends Subject{
+  notifyListeners(){
+    this.notify();
   }
   
-  setState(AccountState state){
-    currentState = state;
+  addListener(Observer observer){
+    this.attach(observer);
   }
   
-  getState(){
-    return currentState;
-  }
-  
-  issueBook(){
-    currentState.issueBook();
-  }
-  
-  onTimeElapsed(){
-   currentState.onTimeElapsed(); 
+  removeListener(Observer observer){
+    this.detach(observer);
   }
 }
 ```
@@ -49,31 +41,60 @@ abstract class AccountState{
 }
 ```
 
-### ActiveState
+### Observer
 ```dart
-class ActiveState implements AccountState{
-  issueBook(){
-    print('ActiveState: issueBook');
+abstract class Observer{
+  update();
+}
+```
+
+### Subject
+```dart
+abstract class Subject{
+  List observers = [];
+  
+  attach(Observer observer){
+    observers.add(observer);
   }
   
-  onTimeElapsed(){
-    print('ActiveState: onTimeElapsed');
-    Account().setState(CancelledState());
+  detach(Observer observer){
+    observers.remove(observer);
+  }
+  
+  notify(){
+    for(var observer in observers){
+      observer.update();
+    }
   }
 }
 ```
 
-### CancelledState
+### EmailNotifier
 ```dart
-class CancelledState implements AccountState{
-  issueBook(){
-    print('CancelledState: issueBook');
+class EmailNotifier implements Observer{
+  Account account;
+  
+  EmailNotifier(Account account){
+    this.account = account;
   }
   
-  onTimeElapsed(){
-    print('CancelledState: onTimeElapsed');
-    Account().setState(ActiveState());
+  update(){
+    print('EmailNotifier');
   }
 }
 ```
 
+### AccountsExpiredView
+```dart
+class AccountsExpiredView implements Observer{
+  Account account;
+  
+  AccountsExpiredView(Account account){
+    this.account = account;
+  }
+  
+  update(){
+    print('AccountsExpiredView');
+  }
+}
+```
