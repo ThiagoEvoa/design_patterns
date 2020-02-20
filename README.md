@@ -1,12 +1,53 @@
-# Strategy
+# Adapter
 
-## Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm very independently from clients that use it.
+## The adapter converts an interface of a class into another interface the client expects. Adapter lets classes work together that couldn't otherwise because of incompatible interfaces.
 
 ### Entrypoint
 ```dart
 void main() {
-  FinanceCalculation calculation = new FinanceCalculation();
-  calculation.calculateBonusByMerit();
+  bool isAbcCalculator = true;
+  Employee employee = Employee();
+    employee.name = 'AbcBonusCalculator';
+  
+  if(isAbcCalculator){
+    AbcBonusCalculator abcBonusCalculator = AbcBonusCalculator();
+    Adapter adapter = Adapter(abcBonusCalculator);
+    adapter.calculateBonus(employee);
+  }else{
+    FinanceCalculation calculation = new FinanceCalculation();
+    calculation.calculateBonusByMerit(employee);  
+  }  
+}
+```
+
+### Employee
+```dart
+class Employee{
+  String name;
+}
+```
+
+### Adapter
+```dart
+class Adapter implements IBonusCalculator{
+  AbcBonusCalculator abcBonusCalculator;
+  
+  Adapter(AbcBonusCalculator abcBonusCalculator){
+    this.abcBonusCalculator = abcBonusCalculator;  
+  }
+  
+  calculateBonus(Employee employee){
+    abcBonusCalculator.computeBonus(employee);
+  }
+}
+```
+
+### AbcBonusCalculator
+```dart
+class AbcBonusCalculator{
+  computeBonus(Employee employee){
+    print(employee.name);
+  }
 }
 ```
 
@@ -14,14 +55,14 @@ void main() {
 ```dart
 class FinanceCalculation extends EmployeeBenefits{
   
-  calculateBonusByGrade(){
+  calculateBonusByGrade(Employee employee){
     this.setBonusCalculator(BonusCalculatorGrade());
-    this.calculateBonus();
+    this.calculateBonus(employee);
   }
   
-  calculateBonusByMerit(){
+  calculateBonusByMerit(Employee employee){
     this.setBonusCalculator(BonusCalculatorMerit());
-    this.calculateBonus();
+    this.calculateBonus(employee);
   }
 }
 ```
@@ -35,8 +76,8 @@ abstract class EmployeeBenefits{
     iBonusCalculator = interface;
   }
   
-  calculateBonus(){
-    iBonusCalculator.calculateBonus();
+  calculateBonus(Employee employee){
+    iBonusCalculator.calculateBonus(employee);
   }
 }
 ```
@@ -44,14 +85,14 @@ abstract class EmployeeBenefits{
 ### IBonusCalculator
 ```dart
 abstract class IBonusCalculator{
-  calculateBonus();
+  calculateBonus(Employee employee);
 }
 ```
 
 ### BonusCalculatorGrade
 ```dart
 class BonusCalculatorGrade implements IBonusCalculator{
-  calculateBonus(){
+  calculateBonus(Employee employee){
     print('BonusCalculatorGrade');
   }
 }
@@ -60,9 +101,8 @@ class BonusCalculatorGrade implements IBonusCalculator{
 ### BonusCalculatorMerit
 ```dart
 class BonusCalculatorMerit implements IBonusCalculator{
-  calculateBonus(){
+  calculateBonus(Employee employee){
     print('BonusCalculatorMerit');
   }
 }
 ```
-
