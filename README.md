@@ -1,38 +1,50 @@
 # Factory Method
 
-## Define a interface for creating an object, but let subclasses decide wich class to instantiate. Factory method lets a class defer instantiation to subclasses.
+## Definition
+### Define a interface for creating an object, but let subclasses decide wich class to instantiate. Factory method lets a class defer instantiation to subclasses.
+
+## Aplicability
+### 1) Use the Factory Method when you don't know beforehand the exact types and dependecies of the objects your code should work with.
+### 2) Use the Factory Method when you want to provide users of your library or framework with a way to extends its internal components.
+
 
 ### Entrypoint
 ```dart
 void main() {
-  SQLDBHelper helper = SQLDBHelper();
-  helper.connectDB();
+  DBHelper _helper;
+  bool _isMysql = true;
+  
+  if(_isMysql){
+    _helper = MysqlDB();
+  }else{
+    _helper = MongoDB();
+  }
+  
+  _helper.connect();
 }
 ```
 
-### SQLDBHelper
+### IDBHelper
 ```dart
-class SQLDBHelper extends DBHelper{
-  connectDB(){
-    this.connect(SQLConnect());
+abstract class IDBHelper{
+  connect();
+}
+```
+
+### MysqlDBHelper
+```dart
+class MysqlDBHelper implements IDBHelper{
+  connect(){
+    print('Connect to Msql');
   }
 }
 ```
 
 ### MongoDBHelper
 ```dart
-class MongoDBHelper extends DBHelper{
-  connectDB(){
-    this.connect(MongoConnect());
-  }
-}
-```
-
-### DBHelper
-```dart
-abstract class DBHelper{
-  connect(IConnect interface){
-    interface.connect();
+class MongoDBHelper implements IDBHelper{
+  connect(){
+    print('Connect to Mongo');
   }
 }
 ```
@@ -44,20 +56,32 @@ abstract class IConnect{
 }
 ```
 
-### SQLConnect
+### Helper
 ```dart
-class SQLConnect implements IConnect{
+abstract class DBHelper{
   connect(){
-    print('SQLConnect');
+    IDBHelper iDBHelper = connectDatabase();
+    iDBHelper.connect();
+  }
+  
+  IDBHelper connectDatabase();
+}
+```
+
+### MysqlDB
+```dart
+class MysqlDB extends DBHelper{
+  IDBHelper connectDatabase(){
+    return MysqlDBHelper();
   }
 }
 ```
 
-### MongoConnect
+### MongoDB
 ```dart
-class MongoConnect implements IConnect{
-  connect(){
-    print('MongoConnect');
+class MongoDB extends DBHelper{
+  IDBHelper connectDatabase(){
+    return MongoDBHelper();
   }
 }
 ```
