@@ -1,108 +1,101 @@
 # Adapter
 
-## The adapter converts an interface of a class into another interface the client expects. Adapter lets classes work together that couldn't otherwise because of incompatible interfaces.
+## Definition
+### Adapter is a structural design pattern, which allows incompatible objects to collaborate.
+
+## Aplicability
+### The Adapter pattern is pretty common in Java code. It’s very often used in systems based on some legacy code. In such cases, Adapters make legacy code with modern classes.
 
 ### Entrypoint
 ```dart
 void main() {
-  bool isAbcCalculator = true;
-  Employee employee = Employee();
-    employee.name = 'AbcBonusCalculator';
+  RoundHole roundHole = RoundHole(5);
+  RoundPeg roundPeg = RoundPeg(5);
   
-  if(isAbcCalculator){
-    AbcBonusCalculator abcBonusCalculator = AbcBonusCalculator();
-    Adapter adapter = Adapter(abcBonusCalculator);
-    adapter.calculateBonus(employee);
-  }else{
-    FinanceCalculation calculation = new FinanceCalculation();
-    calculation.calculateBonusByMerit(employee);  
-  }  
-}
-```
-
-### Employee
-```dart
-class Employee{
-  String name;
-}
-```
-
-### Adapter
-```dart
-class Adapter implements IBonusCalculator{
-  AbcBonusCalculator abcBonusCalculator;
-  
-  Adapter(AbcBonusCalculator abcBonusCalculator){
-    this.abcBonusCalculator = abcBonusCalculator;  
+  if(roundHole.fits(roundPeg)){
+    print('Fits');
   }
   
-  calculateBonus(Employee employee){
-    abcBonusCalculator.computeBonus(employee);
-  }
-}
-```
-
-### AbcBonusCalculator
-```dart
-class AbcBonusCalculator{
-  computeBonus(Employee employee){
-    print(employee.name);
-  }
-}
-```
-
-### FinanceCalculation
-```dart
-class FinanceCalculation extends EmployeeBenefits{
+  SquarePeg smallSquarePeg = SquarePeg(2);
+  SquarePeg largeSquarePeg = SquarePeg(20);
   
-  calculateBonusByGrade(Employee employee){
-    this.setBonusCalculator(BonusCalculatorGrade());
-    this.calculateBonus(employee);
+  SquarePegAdapter smallSquarePegAdapter = SquarePegAdapter(smallSquarePeg);
+  SquarePegAdapter largeSquarePegAdapter = SquarePegAdapter(largeSquarePeg);
+  
+  if(roundHole.fits(smallSquarePegAdapter)){
+    print('SquarePeg fits');
   }
   
-  calculateBonusByMerit(Employee employee){
-    this.setBonusCalculator(BonusCalculatorMerit());
-    this.calculateBonus(employee);
+  if(!roundHole.fits(largeSquarePegAdapter)){
+    print('SquarePeg does not fit');
   }
 }
 ```
 
-### EmployeeBenefits
+### RoundHole
 ```dart
-abstract class EmployeeBenefits{
-  IBonusCalculator iBonusCalculator;
+class RoundHole{
+  double _radius;
   
-  setBonusCalculator(IBonusCalculator interface){
-    iBonusCalculator = interface;
+  RoundHole(double radius){
+    this._radius = radius;
   }
   
-  calculateBonus(Employee employee){
-    iBonusCalculator.calculateBonus(employee);
+  double getRadius(){
+    return _radius;
+  }
+  
+  bool fits(RoundPeg roundPeg){
+    return this.getRadius() >= roundPeg.getRadius();
   }
 }
 ```
 
-### IBonusCalculator
+### RoundPeg
 ```dart
-abstract class IBonusCalculator{
-  calculateBonus(Employee employee);
-}
-```
-
-### BonusCalculatorGrade
-```dart
-class BonusCalculatorGrade implements IBonusCalculator{
-  calculateBonus(Employee employee){
-    print('BonusCalculatorGrade');
+class RoundPeg{
+  double _radius;
+  
+  RoundPeg(double radius){
+    this._radius = radius;
+  }
+  
+  double getRadius(){
+    return _radius;
   }
 }
 ```
 
-### BonusCalculatorMerit
+### SquarePeg
 ```dart
-class BonusCalculatorMerit implements IBonusCalculator{
-  calculateBonus(Employee employee){
-    print('BonusCalculatorMerit');
+class SquarePeg{
+  double _width;
+  
+  SquarePeg(double width){
+    this._width = width;
+  }
+  
+  double getWidth(){
+    return _width;
+  }
+  
+  double getSquare(){
+    return this._width * 2;
+  }
+}
+```
+
+### SquarePegAdapter
+```dart
+class SquarePegAdapter extends RoundPeg{
+  SquarePeg _squarePeg;
+  
+  SquarePegAdapter(SquarePeg squarePeg): super(squarePeg.getWidth()){
+    this._squarePeg = squarePeg;
+  }
+  
+  double getRadius(){
+    return ((_squarePeg.getWidth() / 2) * 2);
   }
 }
 ```
