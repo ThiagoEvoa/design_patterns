@@ -1,4 +1,4 @@
-# Design Patterns
+# Design Patterns (Dart Language)
 
 ### Creational
 [Factory Method](https://github.com/ThiagoEvoa/design_patterns/tree/factory_method)
