@@ -5,14 +5,14 @@
 
 [Singleton](https://github.com/ThiagoEvoa/design_patterns/tree/singleton)
 
+<!--[Prototype]-->
+
 ### Structural
 [Decorator](https://github.com/ThiagoEvoa/design_patterns/tree/decorator)
 
 [Adapter](https://github.com/ThiagoEvoa/design_patterns/tree/adapter)
 
-<!--[Composite]
-
-[Facade]-->
+<!--[Facade]-->
 
 ### Behavioral
 [Strategy](https://github.com/ThiagoEvoa/design_patterns/tree/strategy)
