@@ -1,7 +1,7 @@
 # Factory Method
 
 ## Definition
-### Define a interface for creating an object, but let subclasses decide wich class to instantiate. Factory method lets a class defer instantiation to subclasses.
+### Factory Method is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.
 
 ## Aplicability
 ### 1) Use the Factory Method when you don't know beforehand the exact types and dependecies of the objects your code should work with.
