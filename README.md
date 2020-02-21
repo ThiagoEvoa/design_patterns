@@ -1,12 +1,23 @@
 # Strategy
 
-## Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm very independently from clients that use it.
+## Definition
+### Strategy is a behavioral design pattern that turns a set of behaviors into objects and makes them interchangeable inside original context object.
+
+## Aplicability
+### The original object, called context, holds a reference to a strategy object and delegates it executing the behavior. In order to change the way the context performs its work, other objects may replace the currently linked strategy object with another one.
 
 ### Entrypoint
 ```dart
 void main() {
-  FinanceCalculation calculation = new FinanceCalculation();
-  calculation.calculateBonusByMerit();
+  bool isCreditCard = true;
+  PayStrategy payStrategy;
+  
+  if(isCreditCard)
+    payStrategy = PayByCreditCard();
+  PayByPayPal();
+  
+  payStrategy.pay(2000);
+  payStrategy.collectPaymentDetails();
 }
 ```
 
@@ -26,18 +37,11 @@ class FinanceCalculation extends EmployeeBenefits{
 }
 ```
 
-### EmployeeBenefits
+### PayStrategy
 ```dart
-abstract class EmployeeBenefits{
-  IBonusCalculator iBonusCalculator;
-  
-  setBonusCalculator(IBonusCalculator interface){
-    iBonusCalculator = interface;
-  }
-  
-  calculateBonus(){
-    iBonusCalculator.calculateBonus();
-  }
+abstract class PayStrategy{
+  pay(double paymentAmount);
+  collectPaymentDetails();
 }
 ```
 
@@ -48,20 +52,28 @@ abstract class IBonusCalculator{
 }
 ```
 
-### BonusCalculatorGrade
+### PayByPayPal
 ```dart
-class BonusCalculatorGrade implements IBonusCalculator{
-  calculateBonus(){
-    print('BonusCalculatorGrade');
+class PayByPayPal implements PayStrategy{
+  pay(double paymentAmount){
+    print('Ammount: $paymentAmount');
+  }
+  
+  collectPaymentDetails(){
+    print('Payment details: payed with paypal');
   }
 }
 ```
 
-### BonusCalculatorMerit
+### PayByCreditCard
 ```dart
-class BonusCalculatorMerit implements IBonusCalculator{
-  calculateBonus(){
-    print('BonusCalculatorMerit');
+class PayByCreditCard implements PayStrategy{
+  pay(double paymentAmount){
+    print('Ammount: $paymentAmount');
+  }
+  
+  collectPaymentDetails(){
+    print('Payment details: payed with creditcard');    
   }
 }
 ```
