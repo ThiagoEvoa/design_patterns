@@ -1,97 +1,124 @@
 # Decorator
 
-## Attach additional responsibilities to an  object dynamically.
+## Definition.
+### Decorator is a Conceptual pattern that allows adding new behaviors to objects dynamically by placing them inside special wrapper objects.
+
+## Aplicability
+### Using decorators you can wrap objects countless number of times since both target objects and decorators follow the same interface. The resulting object will get a stacking behavior of all wrappers.
 
 ### Entrypoint
 ```dart
 void main() {
-  ITicket iTicket = BasicTicket();
-  bool palace = true;
-  bool train = false;
+  String anything = 'blá';
   
-  if(palace){
-    iTicket = PalaceDecorator(iTicket);
-  }else if(train){
-    iTicket = TrainDecorator(iTicket);
+  DataSourceDecorator dataSourceDecorator = DataSourceDecorator(EncryptionDecorator(FileDataSource('.txt')));
+  dataSourceDecorator.writeData(anything);
+
+  IDataSource iDataSource = FileDataSource('.txt');
+ 
+  print(iDataSource.readData());
+  print(dataSourceDecorator.readData());
+}
+```
+
+### IDataSource
+```dart
+abstract class IDataSource{
+  writeData(String data);
+  String readData();
+}
+```
+
+### FileDataSource
+```dart
+class FileDataSource implements IDataSource{
+  String _name;
+  
+  FileDataSource(String name){
+    this._name = name;
   }
   
-  TicketProcessor().printTicketPrice(iTicket);
-}
-```
-
-### TicketProcessor
-```dart
-class TicketProcessor{
-  printTicketPrice(ITicket interface){
-    print(interface.getTicketCost().toString());
+  writeData(String data){
+    print('FileDataSource writeData');
   }
-}
-```
-
-### ITicket
-```dart
-abstract class ITicket{
-  double getTicketCost();
-}
-```
-
-### IBonusCalculator
-```dart
-abstract class IBonusCalculator{
-  calculateBonus();
-}
-```
-
-### BasicTicket
-```dart
-class BasicTicket implements ITicket{
-  double getTicketCost(){
-    return 5.0;
+  
+  String readData(){
+    return 'FileDataSource readData';
   }
 }
 ```
 
-### TicketDecorator
+### DataSourceDecorator
 ```dart
-abstract class TicketDecorator implements ITicket{
-  ITicket iTicket;
+class DataSourceDecorator implements IDataSource{
+  IDataSource _iDataSource;
   
-  TicketDecorator(ITicket interface){
-    this.iTicket = interface;
+  DataSourceDecorator(IDataSource iDataSource){
+    this._iDataSource = iDataSource;
   }
   
-  double getTicketCost(){
-    return BasicTicket().getTicketCost();
+  writeData(String data){
+    _iDataSource.writeData(data);
+  }
+  
+  String readData(){
+    return _iDataSource.readData();
   }
 }
 ```
 
-### PalaceDecorator
+### EncryptionDecorator
 ```dart
-class PalaceDecorator extends TicketDecorator{
-  ITicket iTicket;
+class EncryptionDecorator extends DataSourceDecorator{
+  EncryptionDecorator(IDataSource iDataSource) : super(iDataSource);
   
-  PalaceDecorator(ITicket interface) : super(interface){
-    iTicket = interface;
+  writeData(String data){
+    super.writeData(data);
   }
   
-  double getTicketCost(){
-    return iTicket.getTicketCost() + 5;
+  String readData(){
+    return decode(super.readData());
+  }
+  
+  String encode(String data){
+    return data;
+  }
+  
+  String decode(String data){
+    return data;
   }
 }
 ```
 
-### TrainDecorator
+### CompressionDecorator
 ```dart
-class TrainDecorator extends TicketDecorator{
-  ITicket iTicket;
+class CompressionDecorator extends DataSourceDecorator{
+  int _compressLevel = 6;
   
-  TrainDecorator(ITicket interface) : super(interface){
-    iTicket = interface;
+  CompressionDecorator(IDataSource iDataSource): super(iDataSource);
+  
+  getCompressLevel(){
+    return _compressLevel;
   }
   
-  double getTicketCost(){
-    return iTicket.getTicketCost() + 10;
+  setCompressLevel(int compressLevel){
+    this._compressLevel = compressLevel;
+  }
+  
+  writeData(String data){
+    super.writeData(compress(data));
+  }
+  
+  String readData(){
+    return decompress(super.readData());
+  }
+  
+  String compress(String data){
+    return data;
+  }
+  
+  String decompress(String data){
+    return data;
   }
 }
 ```
