@@ -6,11 +6,11 @@
 [Factory Method](https://github.com/ThiagoEvoa/design_patterns/tree/factory_method)
 
 ### Structural
-<!--[Decorator](https://github.com/ThiagoEvoa/design_patterns/tree/decorator)
+<!--[Decorator](https://github.com/ThiagoEvoa/design_patterns/tree/decorator)-->
 
 [Adapter]
 
-[Composite]
+<!--[Composite]
 
 [Facade]-->
 
