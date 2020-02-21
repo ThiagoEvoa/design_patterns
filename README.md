@@ -1,80 +1,36 @@
-# Strategy
+# Singleton
 
 ## Definition
-### Strategy is a behavioral design pattern that turns a set of behaviors into objects and makes them interchangeable inside original context object.
+### Singleton is a creational design pattern, which ensures that only one object of its kind exists and provides a single point of access to it for any other code.
 
 ## Aplicability
-### The original object, called context, holds a reference to a strategy object and delegates it executing the behavior. In order to change the way the context performs its work, other objects may replace the currently linked strategy object with another one.
+### Singleton has almost the same pros and cons as global variables. Although they’re super-handy, they break the modularity of your code. You can just use a class, which depends on Singleton, in some other context. You’ll have to carry the Singleton class as well. Most of the time, this limitation comes up during the creation of unit tests.
 
 ### Entrypoint
 ```dart
 void main() {
-  bool isCreditCard = true;
-  PayStrategy payStrategy;
+  Singleton singleton = Singleton();
+  Singleton otherSingleton = Singleton();
   
-  if(isCreditCard)
-    payStrategy = PayByCreditCard();
-  PayByPayPal();
+  singleton.value = 'Foo';
+  otherSingleton.value = 'Bar';
   
-  payStrategy.pay(2000);
-  payStrategy.collectPaymentDetails();
+  print(singleton.value);
+  print(otherSingleton.value);
 }
 ```
 
-### FinanceCalculation
+### Singleton
 ```dart
-class FinanceCalculation extends EmployeeBenefits{
+class Singleton{
+  static final Singleton _singleton = Singleton._internal();
+  String value;
   
-  calculateBonusByGrade(){
-    this.setBonusCalculator(BonusCalculatorGrade());
-    this.calculateBonus();
-  }
-  
-  calculateBonusByMerit(){
-    this.setBonusCalculator(BonusCalculatorMerit());
-    this.calculateBonus();
-  }
-}
-```
-
-### PayStrategy
-```dart
-abstract class PayStrategy{
-  pay(double paymentAmount);
-  collectPaymentDetails();
-}
-```
-
-### IBonusCalculator
-```dart
-abstract class IBonusCalculator{
-  calculateBonus();
-}
-```
-
-### PayByPayPal
-```dart
-class PayByPayPal implements PayStrategy{
-  pay(double paymentAmount){
-    print('Ammount: $paymentAmount');
+  factory Singleton(){
+    return _singleton;
   }
   
-  collectPaymentDetails(){
-    print('Payment details: payed with paypal');
-  }
-}
-```
-
-### PayByCreditCard
-```dart
-class PayByCreditCard implements PayStrategy{
-  pay(double paymentAmount){
-    print('Ammount: $paymentAmount');
-  }
-  
-  collectPaymentDetails(){
-    print('Payment details: payed with creditcard');    
-  }
+  Singleton._internal();
 }
 ```
 
