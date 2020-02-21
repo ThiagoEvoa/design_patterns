@@ -8,7 +8,7 @@
 ### Structural
 <!--[Decorator](https://github.com/ThiagoEvoa/design_patterns/tree/decorator)-->
 
-[Adapter]
+[Adapter]()
 
 <!--[Composite]
 
