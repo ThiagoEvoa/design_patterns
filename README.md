@@ -5,7 +5,7 @@
 
 [Singleton](https://github.com/ThiagoEvoa/design_patterns/tree/singleton)
 
-<!--[Prototype]-->
+[Prototype](https://github.com/ThiagoEvoa/design_patterns/tree/prototype)
 
 ### Structural
 [Decorator](https://github.com/ThiagoEvoa/design_patterns/tree/decorator)
