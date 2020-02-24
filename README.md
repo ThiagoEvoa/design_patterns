@@ -12,7 +12,7 @@
 
 [Adapter](https://github.com/ThiagoEvoa/design_patterns/tree/adapter)
 
-<!--[Facade]-->
+[Facade](https://github.com/ThiagoEvoa/design_patterns/tree/facade)
 
 ### Behavioral
 [Strategy](https://github.com/ThiagoEvoa/design_patterns/tree/strategy)
