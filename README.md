@@ -1,109 +1,80 @@
-# Prototype
+# Facade
 
 ## Definition
-### Prototype is a creational design pattern that allows cloning objects, even complex ones, without coupling to their specific classes.
+### Facade is a structural design pattern that provides a simplified (but limited) interface to a complex system of classes, library or framework.
 
 ## Aplicability
-### All prototype classes should have a common interface that makes it possible to copy objects even if their concrete classes are unknown. Prototype objects can produce full copies since objects of the same class can access each other’s private fields.
+### While Facade decreases the overall complexity of the application, it also helps to move unwanted dependencies to one place.
 
 ### Entrypoint
 ```dart
 void main() {
-  Circle circle = Circle();
-  circle.x = 10;
-  circle.y = 20;
-  circle.radius = 15;
-  Circle anotherCircle = Circle.fromCircle(circle).clone() as Circle;
+ VideoConversionFacade conversionFacade = VideoConversionFacade();
+  conversionFacade.convertVideo('test.mp4');
+}
+
+class VideoFile{
+  String _name;
+  String _codecType;
   
-  Rectangle rectangle = Rectangle();
-  rectangle.height = 10;
-  rectangle.width = 10;
-  Rectangle anotherRectangle = Rectangle.fromRectangle(rectangle).clone() as Rectangle;
+  VideoFile(String videoName){
+    _name = videoName;
+    _codecType = _name.substring(_name.indexOf('.') + 1);
+  }
   
-  compare(Shape shape1, Shape shape2){
-    if(shape1.equals(shape2)){
-     print('$shape1 and they are the same');
+  getName(){
+    return _name;
+  }
+  
+  getCodecType(){
+    return _codecType;
+  }
+}
+```
+
+### ICodec
+```dart
+abstract class ICodec{
+  
+}
+```
+
+### MPEG4CompressionCodec
+```dart
+class MPEG4CompressionCodec implements ICodec{
+  String type = 'mp4';
+}
+```
+
+### OggCompressionCodec
+```dart
+class OggCompressionCodec implements ICodec{
+  String type = 'ogg';
+}
+```
+
+### CodecFactory
+```dart
+class CodecFactory{
+  static ICodec extract(VideoFile videoFile){
+    String type = videoFile.getCodecType();
+    
+    if(type == 'mp4'){
+      return MPEG4CompressionCodec();
     }else{
-      print('$shape1 but they are not the same');
+      return OggCompressionCodec();
     }
-  }
-  
-  compare(circle, anotherCircle);
-}
-```
-
-### Shape
-```dart
-abstract class Shape{
-  int x;
-  int y;
-  
-  Shape();
-  
-  Shape.fromShape(Shape shape){
-    if(shape != null){
-      this.x = shape.x;
-      this.y = shape.y;
-    }
-  }
-  
-  Shape clone();
-  
-  bool equals(dynamic object){
-    if(!(object is Shape)) return false;
-    Shape shape2 = object as Shape;
-    return shape2.x == x && shape2.y == y;
   }
 }
 ```
 
-### Circle
+### VideoConversionFacade
 ```dart
-class Circle extends Shape{
-  int radius;
-  
-  Circle();
-  
-  Circle.fromCircle(Circle shape): super(){
-    if(shape != null)
-      this.radius = shape.radius;
-  }
-  
-  Shape clone(){
-    return Circle.fromCircle(this);
-  }
-  
-  bool equals(dynamic object){
-    if(!(object is Circle) || (!super.equals(object))) return false;
-    Circle shape2 = object as Circle;
-    return shape2.radius == radius;
-  }
-}
-```
-
-### Rectangle
-```dart
-class Rectangle extends Shape{
-  int width;
-  int height;
-  
-  Rectangle(); 
-  
-  Rectangle.fromRectangle(Rectangle shape) : super(){
-    if(shape != null){
-      this.width = shape.width;
-      this.height = shape.height;      
-    }
-  }
-  
-  Shape clone(){
-    return Rectangle.fromRectangle(this);
-  }
-  
-  bool equals(dynamic object){
-    if(!(object is Rectangle) || (!super.equals(object))) return false;
-    Rectangle shape2 = object as Rectangle;
-    return shape2.width == width && shape2.height == height;
+class VideoConversionFacade{
+  convertVideo(String fileName){
+    VideoFile file = VideoFile(fileName);
+    ICodec codec = CodecFactory.extract(file);
+    print(codec);
   }
 }
 ```
