@@ -33,14 +33,6 @@ class Account extends Subject{
 }
 ```
 
-### AccountState
-```dart
-abstract class AccountState{
-  issueBook(){}
-  onTimeElapsed(){}
-}
-```
-
 ### Observer
 ```dart
 abstract class Observer{
